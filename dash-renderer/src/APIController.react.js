@@ -127,6 +127,14 @@ function storeEffect(props, events, setErrorLoading) {
         layoutRequest
     } = props;
 
+    if (isEmpty(layoutRequest) && isEmpty(layout)) {
+        const layout_element = document.getElementById('_dash-layout')
+        if ( layout_element ) {
+            layoutRequest.content = JSON.parse(layout_element.textContent)
+            layoutRequest.status = STATUS.OK
+        }
+    }
+
     if (isEmpty(layoutRequest)) {
         dispatch(apiThunk('_dash-layout', 'GET', 'layoutRequest'));
     } else if (layoutRequest.status === STATUS.OK) {
@@ -139,6 +147,14 @@ function storeEffect(props, events, setErrorLoading) {
                 setPaths(computePaths(finalLayout, [], null, events.current))
             );
             dispatch(setLayout(finalLayout));
+        }
+    }
+
+    if (isEmpty(dependenciesRequest)) {
+        const layout_element = document.getElementById('_dash-dependencies')
+        if ( layout_element ) {
+            dependenciesRequest.content = JSON.parse(layout_element.textContent)
+            dependenciesRequest.status = STATUS.OK
         }
     }
 
